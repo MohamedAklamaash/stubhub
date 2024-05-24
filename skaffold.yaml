@@ -1,0 +1,22 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+    name: ticketing
+build:
+    local:
+        push: false
+    artifacts:
+        - image: mohamedaklamaash/k8sauthservice
+          context: auth
+          docker:
+              dockerfile: Dockerfile
+          sync: 
+            manual:
+              - src: 'auth/src/**/*.ts'
+                dest: .
+manifests:
+    rawYaml:
+        - kubernetes/*
+
+deploy:
+  kubectl: {}

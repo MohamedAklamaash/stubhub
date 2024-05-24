@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-dep
+  template:
+    metadata:
+      labels:
+        app: auth-dep
+    spec:
+      containers:
+      - name: authcontainer1
+        image: mohamedaklamaash/k8sauthservice
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth
+spec:
+  selector:
+    app: auth-dep
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
