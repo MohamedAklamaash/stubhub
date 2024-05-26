@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-
+// checks if a user is currently logged in
 export const currentUser = (req: Request, res: Response) => {
-    res.send("Hello ");
+    return res.status(200).json({ currentUser: req.currentUser });
 };

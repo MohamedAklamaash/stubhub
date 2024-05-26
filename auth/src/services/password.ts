@@ -1,5 +1,5 @@
 import { scrypt, randomBytes } from "crypto";
-import { promisify } from "util";
+import { promisify } from "util"; // converts callback based funcs into a promise based one
 const scryptAsync = promisify(scrypt);
 //scrpyt creates a buffer and it works with a callback
 export class Password {

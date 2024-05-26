@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { userDetails } from "../../types";
 import { User } from "../models/user";
 import { BadRequestError } from "../errors/user-already-exists";
-
+import jwt from "jsonwebtoken";
 export const signUp = async (
     req: Request,
     res: Response,
@@ -18,7 +18,20 @@ export const signUp = async (
         // hashing of pass needs to be done
         const user = User.build({ email, password });
         await user.save();
-        // need to send a jwt or cookie
+        //Generating a jwt and storing it in req.session
+      
+        const userJwt = jwt.sign(
+            {
+                id: user.id,
+                email: user.email,
+            },
+            process.env.JWT_KEY!
+        );
+        
+        req.session = {
+            jwt: userJwt, 
+        }; // jwt cuz it's tamper free
+        
         res.status(201).json({ user });
     } catch (error) {
         next(error);

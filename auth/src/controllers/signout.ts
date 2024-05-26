@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 
+//jwt is set as a cookie here
 export const signOut = (req: Request, res: Response) => {
-    res.send("Hello ");
+    req.session = null;
+    return res.send({});
 };
