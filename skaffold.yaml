@@ -10,13 +10,21 @@ build:
           context: auth
           docker:
               dockerfile: Dockerfile
-          sync: 
-            manual:
-              - src: 'auth/src/**/*.ts'
-                dest: .
+          sync:
+              manual:
+                  - src: "auth/src/**/*.ts"
+                    dest: .
+        - image: mohamedaklamaash/k8sclient-ticketing
+          context: client
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - dest: .
+                    src: "client/app/**/*.{js,ts,tsx,jsx}"
 manifests:
     rawYaml:
-        - kubernetes/*
+        - ./kubernetes/*
 
 deploy:
-  kubectl: {}
+    kubectl: {}
