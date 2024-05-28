@@ -9,29 +9,30 @@ export const signUp = async (
     next: NextFunction
 ) => {
     try {
-        const { email, password }: userDetails = req.body;
+        const { name, email, password }: userDetails = req.body;
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             throw new BadRequestError("Email already in use");
         }
         // hashing of pass needs to be done
-        const user = User.build({ email, password });
+        const user = User.build({ name, email, password });
         await user.save();
         //Generating a jwt and storing it in req.session
-      
+
         const userJwt = jwt.sign(
             {
                 id: user.id,
                 email: user.email,
+                name: user.name,
             },
             process.env.JWT_KEY!
         );
-        
+
         req.session = {
-            jwt: userJwt, 
+            jwt: userJwt,
         }; // jwt cuz it's tamper free
-        
+
         res.status(201).json({ user });
     } catch (error) {
         next(error);

@@ -9,6 +9,7 @@ interface UserModel extends mongoose.Model<userDoc> {
 interface userDoc extends mongoose.Document {
     email: string;
     password: string;
+    name: string;
 }
 
 const userSchema = new mongoose.Schema(
@@ -20,6 +21,10 @@ const userSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
+        },
+        name: {
+            type: String,
+            default: "",
         },
     },
     {
