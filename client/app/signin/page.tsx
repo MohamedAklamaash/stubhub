@@ -1,21 +1,22 @@
 "use client";
 import { useState, useTransition } from "react";
-import loginpic from "@/public/loginpic.jpg";
+import signin from "@/public/signin.jpg";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useToast } from "@/components/ui/use-toast";
 
 const schema = z.object({
     email: z.string().email({ message: "Invalid email address" }),
     password: z
         .string()
-        .min(4, { message: "Password must be at least 4 characters long" })
+        .min(6, { message: "Password must be at least 6 characters long" })
         .max(20, { message: "Password is too large" })
         .regex(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
             {
                 message:
                     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
@@ -25,6 +26,8 @@ const schema = z.object({
 
 export default function SignUp() {
     const router = useRouter();
+    const { toast } = useToast();
+
     const {
         register,
         handleSubmit,
@@ -41,9 +44,16 @@ export default function SignUp() {
             const res = await axios.post(
                 "https://ticketing.dev/api/users/signin",
                 data
-            );
+            );//destructering of data var doesn't work here,dont' know why!!
             if (res.status === 200) {
                 router.push("/");
+            }
+            if (res.status === 400) {
+                toast({
+                    variant: "destructive",
+                    title: "User not Found Or invalid credentials ",
+                });
+                router.refresh();
             }
             reset();
         } catch (error) {
@@ -93,7 +103,7 @@ export default function SignUp() {
             </form>
             <div className="hidden lg:block">
                 <Image
-                    src={loginpic}
+                    src={signin}
                     alt="Login Illustration"
                     priority
                     className="mix-blend-multiply"

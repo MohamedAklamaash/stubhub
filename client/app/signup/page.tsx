@@ -8,15 +8,16 @@ import Image from "next/image";
 import axios from "axios";
 import { userDetails } from "@/types";
 import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 const schema = z.object({
     name: z.string().min(3, { message: "Name is required" }),
     email: z.string().email({ message: "Invalid email address" }),
     password: z
         .string()
-        .min(4, { message: "Password must be at least 4 characters long" })
+        .min(6, { message: "Password must be at least 6 characters long" })
         .max(20, { message: "Password is too large" })
         .regex(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
             {
                 message:
                     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
@@ -38,16 +39,23 @@ export default function SignUp() {
     const [start, isPending] = useTransition();
 
     const onSubmit = async (data: any) => {
-        const res = await axios.post(`https://ticketing.dev/api/users/signup`, {
-            ...data,
-        });
-        if (res.status === 201) {
-            router.push("/");
+        try {
+            const res = await axios.post(
+                `https://ticketing.dev/api/users/signup`,
+                {
+                    ...data,
+                }
+            ); // destrcuture data var works 
+            if (res.status === 201) {
+                router.push("/");
+            }
+            if (res.status === 400) {
+                router.push("/signin");
+            }
+            reset();
+        } catch (error) {
+            toast({ title: "Error in Signing In" });
         }
-        if (res.status === 400) {
-            router.push("/signin");
-        }
-        reset();
     };
 
     return (
