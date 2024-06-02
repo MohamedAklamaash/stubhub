@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "../models/user";
-import { BadRequestError } from "../errors/user-already-exists";
+import { BadRequestError } from "@sthubhub-aklamaash/common";
 import { Password } from "../services/password";
 import jwt from "jsonwebtoken";
 

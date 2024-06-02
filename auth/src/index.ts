@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { DatabaseConnError } from "./errors/db-conn-err";
+import { DatabaseConnError } from "@sthubhub-aklamaash/common";
 import { app } from "./app";
 (async () => {
     try {

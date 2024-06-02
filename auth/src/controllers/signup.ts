@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { userDetails } from "../../types";
 import { User } from "../models/user";
-import { BadRequestError } from "../errors/user-already-exists";
+import { BadRequestError } from "@sthubhub-aklamaash/common";
 import jwt from "jsonwebtoken";
 export const signUp = async (
     req: Request,

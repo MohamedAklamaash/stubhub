@@ -2,9 +2,9 @@ import express from "express";
 import cookieSession from "cookie-session"; // gives us that .session prop in req
 import { json } from "body-parser";
 import { router as userRouter } from "./route/route";
-import { errorHandler } from "./middleware/error-handler";
-import { NotfoundError } from "./errors/not-found-err";
-import "express-async-errors";
+import { errorHandler } from "@sthubhub-aklamaash/common";
+import { NotfoundError } from "@sthubhub-aklamaash/common";
+import "express-async-errors"; //makes us throw errs in catch block
 
 const app = express();
 

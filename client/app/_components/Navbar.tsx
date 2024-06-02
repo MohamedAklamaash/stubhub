@@ -14,6 +14,8 @@ import { currentUser } from "@/actions/currentUser";
 
 export default async function Navbar() {
     // const currUser = await currentUser();
+    // console.log(currUser);
+    
     return (
         <div className=" sticky top-0 backdrop-blur z-50  supports-[backdrop-filter]:bg-background/60  w-full flex justify-between items-center p-6 ">
             <div className=" bg-transparent ">
