@@ -22,6 +22,14 @@ build:
               manual:
                   - dest: .
                     src: "client/app/**/*.{js,ts,tsx,jsx}"
+        - image: mohamedaklamaash/k8s-ticketing
+          context: ticketservice
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "ticketservice/src/**/*.ts"
+                    dest: .
 manifests:
     rawYaml:
         - ./kubernetes/*

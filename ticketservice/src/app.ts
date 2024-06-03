@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cookieSession from "cookie-session"; // gives us that .session prop in req
 import { json } from "body-parser";
 import { errorHandler, NotfoundError } from "@sthubhub-aklamaash/common";
@@ -20,6 +20,7 @@ app.use(currentUserMiddleware); // this make the req.currentUser prop available 
 app.use("/api/tickets", ticketRouter);
 
 app.use(errorHandler);
+
 
 app.all("*", () => {
     throw new NotfoundError();

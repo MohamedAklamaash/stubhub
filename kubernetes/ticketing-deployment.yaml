@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: auth-deployment
+    name: ticketing-deployment
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: auth-dep
+            app: ticketing-dep
     template:
         metadata:
             labels:
-                app: auth-dep
+                app: ticketing-dep
         spec:
             containers:
-                - name: authcontainer1
-                  image: mohamedaklamaash/k8sauthservice
+                - name: ticketingcontainer1
+                  image: mohamedaklamaash/k8s-ticketing
                   env:
                       - name: MONGO_URI
-                        value: auth-mongo-service
+                        value: ticketing-mongo-srv
                       - name: JWT_KEY
                         valueFrom:
                             secretKeyRef:
@@ -25,13 +25,14 @@ spec:
                                 key: JWT_KEY
 
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
-    name: auth
+    name: ticketing-srv
 spec:
     selector:
-        app: auth-dep
+        app: ticketing-dep
     ports:
         - port: 3000
           targetPort: 3000
