@@ -30,6 +30,14 @@ build:
               manual:
                   - src: "ticketservice/src/**/*.ts"
                     dest: .
+        - image: mohamedaklamaash/k8sorderservice
+          context: orderservice
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "orderservice/src/**/*.ts"
+                    dest: .
 manifests:
     rawYaml:
         - ./kubernetes/*

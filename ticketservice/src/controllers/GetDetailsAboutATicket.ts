@@ -7,10 +7,11 @@ export const GetDetailsAboutATicket = async (req: Request, res: Response) => {
         const { id } = req.params;
         const ticket = await Ticket.findById(id);
         if (!ticket) {
-            throw new BadRequestError("Ticket Not Found");
+            throw new NotfoundError();
         }
         return res.status(200).json({ ticket });
     } catch (error) {
-        throw new NotfoundError();
+        throw new BadRequestError("Ticket Not Found");
+
     }
 };

@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: ticketing-deployment
+    name: order-deployment
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: ticketing-dep
+            app: order-dep
     template:
         metadata:
             labels:
-                app: ticketing-dep
+                app: order-dep
         spec:
             containers:
-                - name: ticketingcontainer1
-                  image: mohamedaklamaash/k8s-ticketing
+                - name: ordercontainer1
+                  image: mohamedaklamaash/k8sorderservice
                   env:
                       - name: NATS_URL
                         value: http://nats-service:4222
@@ -25,7 +25,7 @@ spec:
                             fieldRef:
                                 fieldPath: metadata.name
                       - name: MONGO_URI
-                        value: ticketing-mongo-srv
+                        value: mongodb://order-mongo-srv:27017/order
                       - name: JWT_KEY
                         valueFrom:
                             secretKeyRef:
@@ -36,10 +36,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-    name: ticketing-srv
+    name: order-srv
 spec:
     selector:
-        app: ticketing-dep
+        app: order-dep
     ports:
         - port: 3000
           targetPort: 3000

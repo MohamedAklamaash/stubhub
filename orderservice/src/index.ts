@@ -5,7 +5,7 @@ import { natsWrapper } from "./nats-wrapper";
 (async () => {
     try {
         await mongoose.connect(
-            `mongodb://${process.env.MONGO_URI}:27017/ticket`
+            `${process.env.MONGO_URI}`
         );
         // ticketing is the cluster id as specified in the nats deply yaml
         await natsWrapper.connect(
@@ -18,16 +18,16 @@ import { natsWrapper } from "./nats-wrapper";
             process.exit();
         });
         process.on("SIGTERM", () => {
-            natsWrapper.client?.close();
+            natsWrapper.client.close();
         });
         process.on("SIGINT", () => {
-            natsWrapper.client?.close();
+            natsWrapper.client.close();
         });
-        console.log("Connected to mongodb in ticketing service successfully!!");
+        console.log("Connected to mongodb in order service successfully!!");
     } catch (error) {
         throw new DatabaseConnError();
     }
     app.listen(3000, () => {
-        console.log("Ticketing service running on port 3000");
+        console.log("Order service running on port 3000");
     });
 })();
