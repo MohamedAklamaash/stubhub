@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 import { DatabaseConnError } from "@sthubhub-aklamaash/common";
 import { app } from "./app";
 import { natsWrapper } from "./nats-wrapper";
+import { TicketCreatedListener } from "./events/listeners/Ticket-created-listener";
+import { TicketUpdatedListener } from "./events/listeners/TicketUpdatedListener";
 (async () => {
     try {
-        await mongoose.connect(
-            `${process.env.MONGO_URI}`
-        );
+        await mongoose.connect(`${process.env.MONGO_URI}`);
         // ticketing is the cluster id as specified in the nats deply yaml
         await natsWrapper.connect(
             process.env.NATS_CLUSTER_ID!,
@@ -20,9 +20,13 @@ import { natsWrapper } from "./nats-wrapper";
         process.on("SIGTERM", () => {
             natsWrapper.client.close();
         });
+
         process.on("SIGINT", () => {
             natsWrapper.client.close();
         });
+
+        new TicketCreatedListener(natsWrapper.client).listen();
+        new TicketUpdatedListener(natsWrapper.client).listen();
         console.log("Connected to mongodb in order service successfully!!");
     } catch (error) {
         throw new DatabaseConnError();

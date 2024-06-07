@@ -4,6 +4,7 @@ import { json } from "body-parser";
 import { errorHandler, NotfoundError } from "@sthubhub-aklamaash/common";
 import "express-async-errors"; //makes us throw errs in catch block
 import { currentUserMiddleware } from "@sthubhub-aklamaash/common";
+import { router as OrdersRoute } from "./routes/route";
 const app = express();
 
 // makes sure that our auth service is aware that there is a proxy ingress-ngnix that is running this service
@@ -15,12 +16,12 @@ app.use(
         secure: process.env.NODE_ENV !== "test",
     })
 );
+app.use("/api/orders", OrdersRoute);
+
 app.use(currentUserMiddleware); // this make the req.currentUser prop available in this service scope
 
 app.use(errorHandler);
-app.get("/api/orders/check",(req:Request,res:Response)=>{
-    res.send("Hello World")
-})
+
 app.all("*", () => {
     throw new NotfoundError();
 });
