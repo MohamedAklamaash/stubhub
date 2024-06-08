@@ -21,8 +21,9 @@ export const UpdateTicket = async (req: Request, res: Response) => {
             description: ticket.description,
             tags: ticket.tags,
             imageUrl: ticket.imageUrl,
-            postedBy: ticket.postedBy,
+            postedBy: ticket.postedBy as string,
             quantity: ticket.quantity,
+            version: ticket.version,
         });
         return res.status(200).json({ ticket });
     } catch (error) {

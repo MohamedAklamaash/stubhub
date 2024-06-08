@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { Order } from "./OrderModel";
 import { OrderStatus } from "@sthubhub-aklamaash/common";
-
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 interface TicketAttrs {
     id: string;
     name: string;
@@ -10,26 +10,32 @@ interface TicketAttrs {
     tags?: string[];
     imageUrl?: string;
     postedBy?: string;
+    version?: number;
     quantity: number;
 }
 
 export interface TicketDoc extends mongoose.Document {
     name: string;
+    // id: string; incoming id vantu doc lah iruka koodathu
     price: number;
     description?: string;
     tags?: string[];
     imageUrl?: string;
     postedBy?: string;
     quantity: number;
+    version: number;
     isReserved(): Promise<boolean>;
 }
 
 interface TicketModel extends mongoose.Model<TicketAttrs> {
-    build(attrs: TicketAttrs): void;
+    build(attrs: TicketAttrs): Promise<TicketDoc>;
 }
 
 const TicketSchema = new mongoose.Schema(
     {
+        id: {
+            type: String,
+        },
         name: {
             type: String,
             required: true,
@@ -60,28 +66,39 @@ const TicketSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+        // version: {
+        //     type: Number,
+        // },
     },
     {
         toJSON: {
             transform(doc, ret) {
-                ret.id = ret._id;
+                ret._id = ret.id;
                 delete ret._id;
             },
         },
     }
 );
 
-TicketSchema.statics.build = (attrs: TicketAttrs) => {
-    return new Ticket({
-        _id: attrs.id,
+TicketSchema.set("versionKey", "version");
+TicketSchema.plugin(updateIfCurrentPlugin);
+
+TicketSchema.statics.build = async (attrs: TicketAttrs) => {
+    const ticket = new Ticket({
         name: attrs.name,
         price: attrs.price,
         description: attrs.description,
         tags: attrs.tags,
         imageUrl: attrs.imageUrl,
         postedBy: attrs.postedBy,
+        version: attrs.version,
         quantity: attrs.quantity,
     });
+    ticket._id = attrs.id as unknown as mongoose.Types.ObjectId;
+    ticket.version = attrs.version;
+    await ticket.save();
+
+    return ticket;
 };
 
 //methods are associated with the doc of the model

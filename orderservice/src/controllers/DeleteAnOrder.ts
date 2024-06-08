@@ -27,7 +27,10 @@ export const DeleteAnOrder = async (req: Request, res: Response) => {
         await order.save();
         new OrderCancelledPublisher(natsWrapper.client).publish({
             id: order.id,
-            ticket: order.ticket.id, // ticket reprs ticket id
+            version: order.version,
+            ticket: {
+                id: order.ticket.id,
+            }, // ticket reprs ticket id
         });
         return res.status(200).json({ order });
     } catch (error) {}

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current"; // gives us optimistic concurrency control
 
 interface ticketDoc extends mongoose.Document {
     name: string;
@@ -6,8 +7,9 @@ interface ticketDoc extends mongoose.Document {
     description: string;
     tags: string[];
     imageUrl: string;
-    postedBy: string;
+    postedBy?: string;
     quantity: number;
+    version: number;
 }
 
 const ticketSchema = new mongoose.Schema(
@@ -35,7 +37,6 @@ const ticketSchema = new mongoose.Schema(
         postedBy: {
             // this stores the id of the user that posted the ticket
             type: String,
-            required: true,
         },
         quantity: {
             type: Number,
@@ -51,5 +52,7 @@ const ticketSchema = new mongoose.Schema(
         },
     }
 );
+ticketSchema.set("versionKey", "version");
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 export const Ticket = mongoose.model<ticketDoc>("ticket", ticketSchema);

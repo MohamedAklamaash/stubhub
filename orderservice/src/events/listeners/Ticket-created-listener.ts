@@ -7,14 +7,19 @@ import {
 import { Ticket } from "../../models/TicketModel";
 import { queueGroupName } from "./queue-grp-name";
 
+// this listener isnt' working
 export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
     readonly subject = Subjects.TicketCreated;
     queueGroupName = queueGroupName;
-    onMessage(data: TicketCreatedEvent["data"], msg: Message):void {
+    async onMessage(
+        data: TicketCreatedEvent["data"],
+        msg: Message
+    ): Promise<void> {
         // id in ticket srv will not be equal to id in this orders srv
-        const ticket = Ticket.build(data); // if not working then use build func ,send panra data lah id irukum cuz ticket is created in tickets service and then sent here
+        const ticket = await Ticket.create(data);
+        await ticket.save();
+        console.log("create ticket:", ticket);
+
         msg.ack();
     }
-    parseData(msg: Message) {}
-    listen(): void {}
 }

@@ -8,6 +8,7 @@ import { Ticket, TicketDoc } from "../models/TicketModel";
 import { Order } from "../models/OrderModel";
 import { OrderCreatedPublisher } from "../events/publishers/OrderCreatedPublisher";
 import { natsWrapper } from "../nats-wrapper";
+import { version } from "mongoose";
 
 export const createAnOrder = async (req: Request, res: Response) => {
     try {
@@ -64,16 +65,18 @@ export const createAnOrder = async (req: Request, res: Response) => {
             id: order.id,
             expiresAt: expiresAtString,
             quantity,
+            version: order.version,
             status: OrderStatus.Created,
             ticket: {
                 id: ticket.id,
                 name: ticket.name,
                 postedBy: req.currentUser.id,
                 price: ticket.price,
-                description:ticket.description,
-                imageUrl:ticket.imageUrl,
-                quantity:ticket.quantity,
-                tags:ticket.tags
+                description: ticket.description,
+                imageUrl: ticket.imageUrl,
+                quantity: ticket.quantity,
+                tags: ticket.tags,
+                version: ticket.version, // might be wrong,check it later
             },
         });
         res.status(201).json({ order });

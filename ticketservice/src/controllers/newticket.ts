@@ -6,9 +6,7 @@ import { natsWrapper } from "../nats-wrapper";
 export const NewTicket = async (req: Request, res: Response) => {
     try {
         // req.currentUser's availablity is checked in the middleware
-        const ticket = await Ticket.create({
-            ...req.body,
-        });
+        const ticket = await Ticket.create(req.body);
         if (!req.currentUser?.id || !req.currentUser) {
             throw new BadRequestError("Current User Not Found");
         }
@@ -26,12 +24,14 @@ export const NewTicket = async (req: Request, res: Response) => {
             description: ticket.description,
             tags: ticket.tags,
             imageUrl: ticket.imageUrl,
-            postedBy: ticket.postedBy,
+            postedBy: ticket.postedBy as string,
             quantity: ticket.quantity,
+            version: ticket.version,
         });
 
         return res.status(201).json({ ticket });
     } catch (error) {
+        
         throw new BadRequestError("Unable to create ticket");
     }
 };
