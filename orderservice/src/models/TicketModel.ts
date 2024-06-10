@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { version } from "mongoose";
 import { Order } from "./OrderModel";
 import { OrderStatus } from "@sthubhub-aklamaash/common";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
@@ -29,6 +29,13 @@ export interface TicketDoc extends mongoose.Document {
 
 interface TicketModel extends mongoose.Model<TicketAttrs> {
     build(attrs: TicketAttrs): Promise<TicketDoc>;
+    findByEvent({
+        id,
+        version,
+    }: {
+        id: string;
+        version: number;
+    }): Promise<TicketDoc | null>;
 }
 
 const TicketSchema = new mongoose.Schema(
@@ -101,6 +108,17 @@ TicketSchema.statics.build = async (attrs: TicketAttrs) => {
     return ticket;
 };
 
+TicketSchema.statics.findByEvent = async (event: {
+    id: string;
+    version: number;
+}) => {
+    const ticket = await Ticket.findOne({
+        id: event.id,
+        version: event.version - 1,
+    });
+    return ticket;
+};
+
 //methods are associated with the doc of the model
 TicketSchema.methods.isReserved = async function () {
     const order = await Order.findOne({
@@ -112,7 +130,7 @@ TicketSchema.methods.isReserved = async function () {
                 OrderStatus.Complete,
             ],
         },
-    });
+    });    
     return !!order;
 };
 

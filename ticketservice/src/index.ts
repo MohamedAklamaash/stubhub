@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { DatabaseConnError } from "@sthubhub-aklamaash/common";
 import { app } from "./app";
 import { natsWrapper } from "./nats-wrapper";
+import { OrderCreatedListener } from "./events/listener/OrderCreatedListener";
+import { OrderCancelledListener } from "./events/listener/OrderCancelledListener";
 (async () => {
     try {
         await mongoose.connect(
@@ -23,6 +25,8 @@ import { natsWrapper } from "./nats-wrapper";
         process.on("SIGINT", () => {
             natsWrapper.client?.close();
         });
+        new OrderCreatedListener(natsWrapper.client).listen();
+        new OrderCancelledListener(natsWrapper.client).listen();
         console.log("Connected to mongodb in ticketing service successfully!!");
     } catch (error) {
         throw new DatabaseConnError();

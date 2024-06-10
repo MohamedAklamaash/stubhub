@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cookieSession from "cookie-session"; // gives us that .session prop in req
 import { json } from "body-parser";
 import { errorHandler, NotfoundError } from "@sthubhub-aklamaash/common";
@@ -16,11 +16,13 @@ app.use(
         secure: process.env.NODE_ENV !== "test",
     })
 );
-app.use("/api/orders", OrdersRoute);
 
 app.use(currentUserMiddleware); // this make the req.currentUser prop available in this service scope
 
+app.use("/api/orders", OrdersRoute);
+
 app.use(errorHandler);
+
 
 app.all("*", () => {
     throw new NotfoundError();

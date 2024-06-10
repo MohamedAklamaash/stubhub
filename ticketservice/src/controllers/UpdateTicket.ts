@@ -12,9 +12,16 @@ export const UpdateTicket = async (req: Request, res: Response) => {
         if (!ticket) {
             throw new NotfoundError();
         }
-        Object.assign(ticket, req.body);
+        console.log(ticket.orderId);
+
+        if (ticket.orderId) {
+            throw new BadRequestError(
+                "Tickets' Already Reserved ,so no update can be done"
+            );
+        }
+        ticket.set({ ...req.body });
         await ticket.save();
-        await new TicketUpdatedPublisher(natsWrapper.client).publish({
+        new TicketUpdatedPublisher(natsWrapper.client).publish({
             id: ticket.id,
             name: ticket.name,
             price: ticket.price,

@@ -16,18 +16,33 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
         msg: Message
     ): Promise<void> {
         try {
-            console.log("Ticket Version:", data.version, "id:", data.id);
-
-            const ticket = await Ticket.findOne({
-                version: data.version - 1,
+            let ticket = await Ticket.findOne({
                 id: data.id,
+                version: data.version,
             });
-            console.log("ticket found!,", ticket);
+            const tickets = await Ticket.find({});
+            console.log(tickets);
+            console.log(data.version);
 
             if (!ticket) {
-                throw new NotfoundError();
+                ticket = await Ticket.findOne({
+                    id: data.id,
+                    version: data.version - 1,
+                });
+                if (!ticket) {
+                    throw new NotfoundError();
+                }
             }
-            const { price, quantity, name, description, imageUrl, tags } = data;
+            const {
+                price,
+                quantity,
+                name,
+                description,
+                imageUrl,
+                tags,
+                orderId,
+                postedBy
+            } = data;
             ticket.set({
                 price,
                 quantity,
@@ -35,6 +50,8 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
                 description,
                 imageUrl,
                 tags,
+                orderId,
+                postedBy
             });
             await ticket.save();
             msg.ack();

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { OrderStatus } from "@sthubhub-aklamaash/common";
 import { TicketDoc } from "./TicketModel";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 interface OrderAttrs {
     userId: string;
@@ -57,13 +58,16 @@ const OrderSchema = new mongoose.Schema(
     }
 );
 
+OrderSchema.set("versionKey", "version");
+OrderSchema.plugin(updateIfCurrentPlugin)
+
 OrderSchema.statics.build = (attrs: OrderAttrs) => {
     // Converted Date object to ISO string
     const expiresAt = new Date(attrs.expiresAt).toISOString();
 
     return new Order({
         ...attrs,
-        expiresAt,  
+        expiresAt,
     });
 };
 

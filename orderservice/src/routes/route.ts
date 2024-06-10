@@ -4,10 +4,11 @@ import { GetAllOrdersByUser } from "../controllers/GetAllOrderByUser";
 import { ValidateOrder } from "../middleware/ValidatoreOrder";
 import { createAnOrder } from "../controllers/CreateAnOrder";
 import { GetDetailsAboutSpecificOrder } from "../controllers/GetDetailsAboutSpecificOrder";
+import { DeleteAnOrder } from "../controllers/DeleteAnOrder";
 
 export const router = express.Router();
 
 router.get("/", requireAuth, GetAllOrdersByUser);
 router.post("/", requireAuth, ValidateOrder, createAnOrder);
-router.patch("/:id", requireAuth, GetDetailsAboutSpecificOrder);
+router.put("/:id", requireAuth, DeleteAnOrder);
 router.get("/:id", requireAuth, GetDetailsAboutSpecificOrder);

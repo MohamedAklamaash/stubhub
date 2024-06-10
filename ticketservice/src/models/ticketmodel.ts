@@ -5,12 +5,14 @@ interface ticketDoc extends mongoose.Document {
     name: string;
     price: number;
     description: string;
+    orderId?: string;
     tags: string[];
     imageUrl: string;
     postedBy?: string;
     quantity: number;
     version: number;
 }
+
 
 const ticketSchema = new mongoose.Schema(
     {
@@ -42,6 +44,9 @@ const ticketSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+        orderId: {
+            type: String,
+        },
     },
     {
         toJSON: {
@@ -55,4 +60,7 @@ const ticketSchema = new mongoose.Schema(
 ticketSchema.set("versionKey", "version");
 ticketSchema.plugin(updateIfCurrentPlugin);
 
-export const Ticket = mongoose.model<ticketDoc>("ticket", ticketSchema);
+export const Ticket = mongoose.model<ticketDoc>(
+    "ticket",
+    ticketSchema
+);

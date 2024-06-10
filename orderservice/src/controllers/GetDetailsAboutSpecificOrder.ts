@@ -15,7 +15,7 @@ export const GetDetailsAboutSpecificOrder = async (
             throw new BadRequestError("Current User not found");
         }
         const { id } = req.params;
-        const order = await Order.findById(id);
+        const order = await Order.findById(id).populate("ticket");
         if (order?.userId !== req.currentUser.id) {
             throw new NotAuthorizedError();
         }

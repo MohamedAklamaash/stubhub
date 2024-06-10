@@ -1,11 +1,9 @@
-import mongoose, { version } from "mongoose";
-import { DatabaseConnError, Subjects } from "@sthubhub-aklamaash/common";
+import mongoose from "mongoose";
+import { DatabaseConnError } from "@sthubhub-aklamaash/common";
 import { app } from "./app";
 import { natsWrapper } from "./nats-wrapper";
 import { TicketCreatedListener } from "./events/listeners/Ticket-created-listener";
 import { TicketUpdatedListener } from "./events/listeners/TicketUpdatedListener";
-import nats, { Message } from "node-nats-streaming";
-import { Ticket } from "./models/TicketModel";
 
 (async () => {
     try {
@@ -30,23 +28,7 @@ import { Ticket } from "./models/TicketModel";
 
         new TicketCreatedListener(natsWrapper.client).listen();
         new TicketUpdatedListener(natsWrapper.client).listen();
-        // const dummy = natsWrapper.client.subscribe(Subjects.TicketCreated);
-        // dummy.on("message", (msg: Message) => {
-        //     console.log("Listener Working:", msg.getData());
-        //     const data = msg.getData();
-        //     const vals =
-        //         typeof data === "string"
-        //             ? JSON.parse(data)
-        //             : JSON.parse(data.toString("utf8"));
-        //     (async () => {
-        //         const dummy1 = await Ticket.create(vals);
-        //         await dummy1.save();
-        //         console.log("create ticket:", dummy1);
-        //     })();
-
-        //     msg.ack();
-        // });
-        console.log("Connected to mongodb in order service successfully!!");
+        console.log("Connected to mongodb in order service successfully!!!");
     } catch (error) {
         throw new DatabaseConnError();
     }

@@ -16,7 +16,7 @@ export const DeleteAnOrder = async (req: Request, res: Response) => {
             throw new BadRequestError("Current User not found");
         }
         const { id } = req.params;
-        const order = await Order.findById(id).populate("Ticket");
+        const order = await Order.findById(id).populate("ticket");
         if (order?.userId !== req.currentUser.id) {
             throw new NotAuthorizedError();
         }
@@ -30,6 +30,7 @@ export const DeleteAnOrder = async (req: Request, res: Response) => {
             version: order.version,
             ticket: {
                 id: order.ticket.id,
+                quantity: order.quantity as number,
             }, // ticket reprs ticket id
         });
         return res.status(200).json({ order });
