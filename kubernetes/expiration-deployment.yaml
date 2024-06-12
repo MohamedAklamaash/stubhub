@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: expiration-deployment
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: expiration-deply
+    template:
+        metadata:
+            labels:
+                app: expiration-deply
+        spec:
+            containers:
+                - name: expirationcontainer1
+                  image: mohamedaklamaash/expirationservice
+                  env:
+                      - name: NATS_URL
+                        value: http://nats-service:4222
+                      - name: NATS_CLUSTER_ID
+                        value: ticketing
+                      - name: NATS_CLIENT_ID
+                        valueFrom:
+                            fieldRef:
+                                fieldPath: metadata.name
+                      - name: REDIS_HOST
+                        value: expiration-redis-service
+

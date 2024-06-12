@@ -13,9 +13,7 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
     queueGroupName = queueGroupName;
     async onMessage(data: OrderCancelledEvent["data"], msg: Message) {
         const ticket = await Ticket.findById(data.ticket.id);
-
-        console.log(data);
-
+        
         if (!ticket) {
             throw new BadRequestError(
                 "There might be an error while creating an order"

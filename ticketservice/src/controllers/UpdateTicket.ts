@@ -12,7 +12,6 @@ export const UpdateTicket = async (req: Request, res: Response) => {
         if (!ticket) {
             throw new NotfoundError();
         }
-        console.log(ticket.orderId);
 
         if (ticket.orderId) {
             throw new BadRequestError(

@@ -24,16 +24,12 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
         */
 
         const ticket = await Ticket.findById(data.ticket.id);
-        console.log("Inside order created listener");
 
         if (!ticket) {
-            console.log("no ticket found");
             const data1 = await Ticket.find({});
-            console.log(data1);
 
             return new NotfoundError();
         }
-        console.log(ticket);
 
         const quantity = ticket.quantity - data.quantity;
         ticket.set({ orderId: data.id, quantity });

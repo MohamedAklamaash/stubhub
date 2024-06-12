@@ -4,7 +4,7 @@ import { GetAllOrdersByUser } from "../controllers/GetAllOrderByUser";
 import { ValidateOrder } from "../middleware/ValidatoreOrder";
 import { createAnOrder } from "../controllers/CreateAnOrder";
 import { GetDetailsAboutSpecificOrder } from "../controllers/GetDetailsAboutSpecificOrder";
-import { DeleteAnOrder } from "../controllers/DeleteAnOrder";
+import { DeleteAnOrder } from "../controllers/CancelAnOrder";
 
 export const router = express.Router();
 

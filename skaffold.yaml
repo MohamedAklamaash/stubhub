@@ -38,6 +38,14 @@ build:
               manual:
                   - src: "orderservice/src/**/*.ts"
                     dest: .
+        - image: mohamedaklamaash/expirationservice
+          context: expirationservice
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "expirationservice/src/**/*.ts"
+                    dest: .
 manifests:
     rawYaml:
         - ./kubernetes/*

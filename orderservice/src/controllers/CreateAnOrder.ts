@@ -53,7 +53,7 @@ export const createAnOrder = async (req: Request, res: Response) => {
         await ticket.save();
 
         const expiration = new Date();
-        const EXPIRATION_WINDOW_SECONDS = 15 * 60;
+        const EXPIRATION_WINDOW_SECONDS = 1 * 60; // expiration window is 5 mins
         expiration.setSeconds(
             expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS
         );
@@ -66,6 +66,7 @@ export const createAnOrder = async (req: Request, res: Response) => {
             ticket,
             quantity,
         });
+       
         // publish an order:created after order
         await order.save();
 

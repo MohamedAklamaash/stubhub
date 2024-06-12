@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import cookieSession from "cookie-session"; // gives us that .session prop in req
 import { json } from "body-parser";
 import { errorHandler, NotfoundError } from "@sthubhub-aklamaash/common";
