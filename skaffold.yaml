@@ -46,6 +46,14 @@ build:
               manual:
                   - src: "expirationservice/src/**/*.ts"
                     dest: .
+        - image: mohamedaklamaash/paymentservice
+          context: paymentservice
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "paymentservice/src/**/*.ts"
+                    dest: .
 manifests:
     rawYaml:
         - ./kubernetes/*
