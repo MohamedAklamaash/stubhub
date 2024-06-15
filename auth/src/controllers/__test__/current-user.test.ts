@@ -28,5 +28,5 @@ it("responds with null cuz no jwt is found", async () => {
         .send({})
         .expect(200);
 
-    expect(response.body.currentUser?.email).toEqual(null);
+    expect(response.body.currentUser?.email).toEqual(undefined);
 });

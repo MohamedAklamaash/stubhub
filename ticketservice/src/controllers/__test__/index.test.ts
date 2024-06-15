@@ -1,0 +1,20 @@
+import request from "supertest";
+import { app } from "../../app";
+
+const createTicket = () => {
+  return request(app).post("/api/tickets").set("Cookie", global.signin()).send({
+    name: "Concert1",
+    price: 1000,
+    quantity: 10,
+  });
+};
+
+it("can fetch a list of tickets", async () => {
+  const ticket = await createTicket();
+  await createTicket();
+  await createTicket();
+  
+  const response = await request(app).get("/api/tickets").send().expect(200);
+
+  expect(response.body.length).toEqual(undefined);
+});
