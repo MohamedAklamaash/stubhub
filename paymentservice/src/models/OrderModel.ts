@@ -31,7 +31,7 @@ const orderSchema = new mongoose.Schema(
             required: true,
         },
         status: {
-            type: OrderStatus,
+            type: String,
             required: true,
             enum: [
                 OrderStatus.AwaitingPayment,

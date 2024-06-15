@@ -41,7 +41,7 @@ export const ChargeCreated = async (req: Request, res: Response) => {
             orderId,
             stripeId: charge.id,
         }); 
-        await payment.save();
+        await payment.save()
         new PaymentCreatedPublisher(natsWrapper.client).publish({
             orderId,
             paymentId: payment.id,

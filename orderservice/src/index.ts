@@ -5,6 +5,7 @@ import { natsWrapper } from "./nats-wrapper";
 import { TicketCreatedListener } from "./events/listeners/Ticket-created-listener";
 import { TicketUpdatedListener } from "./events/listeners/TicketUpdatedListener";
 import { ExpirationCompleteListener } from "./events/listeners/ExpirationCompleteListener";
+import { PaymentCompletedListener } from "./events/listeners/PaymentCompletedListener";
 
 (async () => {
     try {
@@ -30,6 +31,7 @@ import { ExpirationCompleteListener } from "./events/listeners/ExpirationComplet
         new TicketCreatedListener(natsWrapper.client).listen();
         new TicketUpdatedListener(natsWrapper.client).listen();
         new ExpirationCompleteListener(natsWrapper.client).listen();
+        new PaymentCompletedListener(natsWrapper.client).listen();
         console.log("Connected to mongodb in order service successfully!!!");
     } catch (error) {
         throw new DatabaseConnError();
