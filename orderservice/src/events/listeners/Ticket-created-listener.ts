@@ -16,7 +16,8 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
     ): Promise<void> {
         const ticket = await Ticket.create(data);
         await ticket.save();
-
+        console.log(ticket);
+        
         msg.ack();
     }
 }

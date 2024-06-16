@@ -67,7 +67,6 @@ const TicketSchema = new mongoose.Schema(
         postedBy: {
             // this stores the id of the user that posted the ticket
             type: String,
-            required: true,
         },
         quantity: {
             type: Number,
