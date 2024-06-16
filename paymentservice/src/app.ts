@@ -11,10 +11,10 @@ const app = express();
 app.set("trust proxy", true);
 app.use(json());
 app.use(
-    cookieSession({
-        signed: false, // encryption is not done here cuz jwt itself is tamper resistent
-        secure: process.env.NODE_ENV !== "test",
-    })
+  cookieSession({
+    signed: false, // encryption is not done here cuz jwt itself is tamper resistent
+    secure: process.env.NODE_ENV !== "test",
+  })
 );
 app.use(currentUserMiddleware); // this make the req.currentUser prop available in this service scope
 
@@ -23,7 +23,7 @@ app.use("/api/payments", PaymentsRouter);
 app.use(errorHandler);
 
 app.all("*", () => {
-    throw new NotfoundError();
+  throw new NotfoundError();
 });
 
 export { app };

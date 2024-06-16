@@ -22,7 +22,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
             userId: data.ticket.postedBy ?? "",
         });
         await order.save();
-        console.log("Order created in payments service");
+        console.log("Order created in payments service:",order);
         
         msg.ack();
     }
