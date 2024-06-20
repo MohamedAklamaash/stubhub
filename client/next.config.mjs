@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images:{
-        domains:["media.gettyimages.com"]
-    }
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "media.gettyimages.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

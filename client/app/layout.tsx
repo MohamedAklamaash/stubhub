@@ -7,22 +7,22 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Stubhub",
-    description: "A ticketing app that provides with all the available tickets",
+  title: "Stubhub",
+  description: "A ticketing app that provides with all the available tickets",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-            <body className={`${inter.className} `}>
-                <Navbar />
-                {children}
-                <Toaster />
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body className={`${inter.className} `}>
+        <Toaster />
+        <Navbar />
+        {children}
+      </body>
+    </html>
+  );
 }
