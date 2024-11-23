@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# List of directories to run npm install in
 directories=("auth" "client" "expirationservice" "orderservice" "paymentservice" "ticketservice")
 
 # Loop through each directory and run npm install
